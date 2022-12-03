@@ -15,9 +15,9 @@ class nationalityChoices(models.TextChoices):
 
 # Create your models here.
 class User(models.Model):
-    firstName = models.CharField(max_length=30, null=True)
+    firstName = models.CharField(max_length=150, null=True)
     lastName = models.CharField(max_length=30, null=True)
-    username = models.CharField(max_length=30, unique=True)
+    username = models.CharField(max_length=150, unique=True)
     galeryPath = models.CharField(max_length=30, null=True)
     description = models.TextField(max_length=30, null=True)
     age = models.IntegerField(validators=ageValues)

@@ -25,7 +25,7 @@ SECRET_KEY = 'yfwig6a$yw=-uef38ta^)5#j5prs2st+w=#b*essw1_nnsiomp'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['192.168.1.243','localhost','127.0.0.1']
+ALLOWED_HOSTS = ['192.168.1.243','localhost','127.0.0.1', 'https://epava1516-automatic-xylophone-pggg6wj5x5527w64-8000.preview.app.github.dev/']
 
 
 # Application definition
@@ -85,6 +85,12 @@ DATABASES = {
         'PORT': os.environ['POSTGRES_PORT'],
     }
 }
+
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': [],
+    'DEFAULT_AUTHENTICATION_CLASSES': [],
+}
+
 
 # Password validation
 # https://docs.djangoproject.com/en/2.2/ref/settings/#auth-password-validators
