@@ -25,8 +25,11 @@ SECRET_KEY = 'yfwig6a$yw=-uef38ta^)5#j5prs2st+w=#b*essw1_nnsiomp'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['192.168.1.243','localhost','127.0.0.1', 'https://epava1516-automatic-xylophone-pggg6wj5x5527w64-8000.preview.app.github.dev/']
+ALLOWED_HOSTS = ['localhost','127.0.0.1']
 
+if 'CODESPACE_NAME' in os.environ:
+    CODESPACE_NAME = os.environ['CODESPACE_NAME']
+    ALLOWED_HOSTS.append(f"https://{CODESPACE_NAME}-8000.preview.app.github.dev/")
 
 # Application definition
 
@@ -38,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
+    'url_filter',
     'api',
 ]
 

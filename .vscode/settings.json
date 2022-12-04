@@ -1,3 +1,5 @@
 {
-    "python.analysis.typeCheckingMode": "basic"
+    "python.analysis.typeCheckingMode": "basic",
+    "python.linting.enabled": true,
+    // "python.linting.pylintArgs": ["--disable=C0111","--disable=C0206", "--disable=W3101"],
 }

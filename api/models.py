@@ -2,12 +2,13 @@ from django.db import models
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.utils.translation import gettext_lazy as _
 
-
 rateValues = [MinValueValidator(0), MaxValueValidator(5)]
 ageValues = [MinValueValidator(18)]
+
 class genreChoices(models.TextChoices):
     HOMBRE = 'H', _('Hombre')
     MUJER = 'M', _('Mujer')
+    TRANS = 'T', _('Trans')
 
 class nationalityChoices(models.TextChoices):
     ESPANYOLA = 'ES', _('Española')
@@ -26,7 +27,8 @@ class User(models.Model):
     phone_prefix = models.IntegerField(null=True)
     phone = models.IntegerField()
     show_phone = models.BooleanField(default=False)
-    email = models.EmailField(unique=True)
+    # email = models.EmailField(unique=True)
+    email = models.EmailField(unique=False)
     show_email = models.BooleanField(default=False)
     dni = models.CharField(max_length=30, null=True, unique=True)
     dniPhoto = models.CharField(max_length=30, null=True, unique=True)

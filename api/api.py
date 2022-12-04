@@ -1,11 +1,14 @@
 from .models import User, UserComment, Group, GroupComment, UserGroupRelation, UserGallery, GroupGallery
 from rest_framework import viewsets, permissions
 from .serializers import UserSerializer, uCommentSerializer, GroupSerializer, gCommentSerializer, ugRelationSerializer, userGallerySerializer, groupGallerySerializer
+from url_filter.integrations.drf import DjangoFilterBackend
 
 class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
     permission_classes = [permissions.AllowAny]
     serializer_class = UserSerializer
+    filter_backends = [DjangoFilterBackend]
+    filter_fields = ['genre']
 
 class uCommentViewSet(viewsets.ModelViewSet):
     queryset = UserComment.objects.all()

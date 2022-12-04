@@ -1,6 +1,5 @@
 import json
 import requests
-from gzip import decompress
 
 f = open('provincias.json')
 
@@ -22,7 +21,6 @@ def checkstatus(url):
     try:
         r = requests.get(url)
         return(r.status_code)
-        # prints the int of the status code. Find more at httpstatusrappers.com :)
     except requests.ConnectionError:
         return("failed to connect")
 
@@ -40,17 +38,15 @@ for item in json_provincias:
 
 for comunidad in spain:
     print(comunidad)
-    for provincia in spain[comunidad]['provincias']:
-        print(provincia)
+    for idx, provincia in enumerate(spain[comunidad]['provincias']):
         full_url = "https://valenciacitas-v2.s3.eu-west-3.amazonaws.com/data/{}.gzip".format(normalize(provincia).lower())
-        spain[comunidad]['provincias'][provincia]['url'] = full_url
-        spain[comunidad]['provincias'][provincia]['urls_status'] = checkstatus(full_url)
-        if spain[comunidad]['provincias'][provincia]['urls_status'] == 200:
+        if checkstatus(full_url) != 200 && idx == len()
+        if checkstatus(full_url) == 200:
+            print(provincia)
             print("Esta provincia tiene un json")
             gzip_uncompressed = unzip_json(full_url)
             spain[comunidad]['provincias'][provincia]['girls'] = gzip_uncompressed['girls']
             spain[comunidad]['provincias'][provincia]['guysAndTrans'] = gzip_uncompressed['guysAndTrans']
-        if spain[comunidad]['provincias'][provincia]['urls_status'] == 200:
             for girl in spain[comunidad]['provincias'][provincia]['girls']:
                 url = "http://localhost:8000/api/users/"
                 data = {}
@@ -62,5 +58,43 @@ for comunidad in spain:
                 data['addressCountry'] = 'Spain'
                 data['addressState'] = 'comunidad'
                 data['genre'] = 'M'
-                print(data)
-                r = requests.post("http://localhost:8000/api/users/", json=data)
+                data['isWorker'] = True
+                data['isDeleted'] = False
+                data['show_phone'] = False
+                r = requests.post(url, json=data)
+            for other in spain[comunidad]['provincias'][provincia]['guysAndTrans']:
+                # print(other)
+                if 'isMan' in other:
+                    if other['isMan']:
+                        url = "http://localhost:8000/api/users/"
+                        data = {}
+                        data['username'] = other['name']['es']
+                        data['age'] = 18
+                        data['phone'] = other['phoneNumber']
+                        data['email'] = "paredes1516@gmail.com"
+                        data['addressCity'] = provincia
+                        data['addressCountry'] = 'Spain'
+                        data['addressState'] = 'comunidad'
+                        data['genre'] = 'H'
+                        data['isWorker'] = True
+                        data['isDeleted'] = False
+                        data['show_phone'] = False
+                        r = requests.post(url, json=data)
+                        # print(r.text)
+                    else:
+                        url = "http://localhost:8000/api/users/"
+                        data = {}
+                        data['username'] = other['name']['es']
+                        data['age'] = 18
+                        data['phone'] = other['phoneNumber']
+                        data['email'] = "paredes1516@gmail.com"
+                        data['addressCity'] = provincia
+                        data['addressCountry'] = 'Spain'
+                        data['addressState'] = 'comunidad'
+                        data['genre'] = 'T'
+                        data['isWorker'] = True
+                        data['isDeleted'] = False
+                        data['show_phone'] = False
+                        r = requests.post(url, json=data)
+                # else:
+                #     print(list(other.keys()))
