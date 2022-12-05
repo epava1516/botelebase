@@ -1,5 +1,13 @@
 {
-    "python.analysis.typeCheckingMode": "basic",
+    "python.analysis.typeCheckingMode": "off",
     "python.linting.enabled": true,
-    // "python.linting.pylintArgs": ["--disable=C0111","--disable=C0206", "--disable=W3101"],
+    "python.linting.pylintArgs": [  "--disable=missing-module-docstring",
+                                    "--disable=missing-function-docstring",
+                                    "--disable=consider-using-dict-items",
+                                    "--disable=missing-timeout",
+                                    "--disable=invalid-name",
+                                    "--disable=unspecified-encoding",
+                                    "--disable=missing-class-docstring",
+                                    "--max-line-length=240",
+                                ],
 }

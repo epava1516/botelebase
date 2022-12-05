@@ -20,15 +20,15 @@ class User(models.Model):
     lastName = models.CharField(max_length=30, null=True)
     username = models.CharField(max_length=150, unique=True)
     galeryPath = models.CharField(max_length=30, null=True)
-    description = models.TextField(max_length=30, null=True)
-    age = models.IntegerField(validators=ageValues)
+    description = models.TextField(max_length=500, null=True)
+    age = models.IntegerField(validators=ageValues, null=True)
     genre = models.CharField(max_length=30, choices=genreChoices.choices)
     nationality = models.CharField(max_length=30, choices=nationalityChoices.choices, null=True)
     phone_prefix = models.IntegerField(null=True)
     phone = models.IntegerField()
     show_phone = models.BooleanField(default=False)
     # email = models.EmailField(unique=True)
-    email = models.EmailField(unique=False)
+    email = models.EmailField(unique=False, null=True)
     show_email = models.BooleanField(default=False)
     dni = models.CharField(max_length=30, null=True, unique=True)
     dniPhoto = models.CharField(max_length=30, null=True, unique=True)
@@ -37,6 +37,7 @@ class User(models.Model):
     addressCountry = models.CharField(max_length=30)
     addressPostalcode = models.CharField(max_length=30, null=True)
     addressState = models.CharField(max_length=30)
+    addressMuni = models.CharField(max_length=30)
     addressZone = models.CharField(max_length=30, null=True)
     addressStreet = models.CharField(max_length=30, null=True)
     services = models.JSONField(null=True)
@@ -80,13 +81,16 @@ class GroupComment(models.Model):
 
 class UserGallery(models.Model):
     userId = models.ForeignKey(User, on_delete=models.CASCADE)
-    photo = models.CharField(max_length=50)
+    photo = models.JSONField(default=list)
+    video = models.JSONField(default=list)
     checksum = models.CharField(max_length=50, unique=True)
+    verified = models.BooleanField(default=False)
 
 class GroupGallery(models.Model):
     groupId = models.ForeignKey(Group, on_delete=models.CASCADE)
     photo = models.CharField(max_length=50)
     checksum = models.CharField(max_length=50, unique=True)
+    verified = models.BooleanField(default=False)
 
 class UserGroupRelation(models.Model):
     userId = models.ForeignKey(User, on_delete=models.CASCADE)

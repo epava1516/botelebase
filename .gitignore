@@ -2,3 +2,4 @@ venv
 *.pyc
 *pycache*
 migrations/
+api/migrations/0001_initial.py

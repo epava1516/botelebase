@@ -4,7 +4,7 @@ from .models import User, UserComment, Group, GroupComment, UserGroupRelation, U
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ('id', 'firstName', 'lastName', 'username', 'galeryPath', 'description', 'age', 'genre', 'nationality', 'phone_prefix', 'phone', 'show_phone', 'email', 'show_email', 'dni', 'dniPhoto', 'addressCity', 'addressCountry', 'addressPostalcode', 'addressState', 'addressZone', 'addressStreet', 'services', 'isWorker', 'isDeleted', 'updatedAt', 'createdAt')
+        fields = ('id', 'firstName', 'lastName', 'username', 'galeryPath', 'description', 'age', 'genre', 'nationality', 'phone_prefix', 'phone', 'show_phone', 'email', 'show_email', 'dni', 'dniPhoto', 'coordinates', 'addressCity', 'addressCountry', 'addressPostalcode', 'addressState', 'addressMuni', 'addressZone', 'addressStreet', 'services', 'isWorker', 'isDeleted', 'updatedAt', 'createdAt')
         read_only_fields = ('createdAt',)
 
 class uCommentSerializer(serializers.ModelSerializer):

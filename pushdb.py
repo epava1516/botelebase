@@ -1,100 +1,97 @@
 import json
 import requests
+from library.stealfuncs import normalize, checkspain, print_update, generate_post_data
 
-f = open('provincias.json')
+with open('provincias.json') as f:
+    json_provincias = json.load(f)
 
-json_provincias = json.load(f)
-
-def normalize(s):
-    replacements = (
-        ("á", "a"),
-        ("é", "e"),
-        ("í", "i"),
-        ("ó", "o"),
-        ("ú", "u"),
-    )
-    for a, b in replacements:
-        s = s.replace(a, b).replace(a.upper(), b.upper())
-    return(s)
-
-def checkstatus(url):
-    try:
-        r = requests.get(url)
-        return(r.status_code)
-    except requests.ConnectionError:
-        return("failed to connect")
-
-def unzip_json(url):
-    return(json.loads(requests.get(url).content))
-
+with open('lista_municipios.json') as f:
+    json_municipios = json.load(f)
 
 spain = {}
 for item in json_provincias:
-    if item['fields']['ccaa'] not in spain:
-        spain[item['fields']['ccaa']] = {}
-        spain[item['fields']['ccaa']]['provincias'] = {}
+    comunidad = normalize(item['fields']['ccaa'])
+    if comunidad not in spain:
+        spain[comunidad] = {"provincias": {}}
 
-    spain[item['fields']['ccaa']]['provincias'][item['fields']['texto']] = {}
+    provincia = normalize(item['fields']['texto'])
+    spain[comunidad]['provincias'][provincia] = {"municipios": {}}
+    for objeto in json_municipios:
+        provincias = normalize(objeto['prov'])
+        municipio = normalize(objeto['loc'])
+        if provincias == provincia:
+            spain[comunidad]['provincias'][provincia]["municipios"][municipio] = {}
+
+for comunidad in spain.copy():
+    print("Comunidad: " + comunidad)
+    # recorremos todas las provincias
+    for provincia in spain[comunidad]['provincias'].copy():
+        homonimo = False
+
+        # recorremos todos los municipios
+        for municipio in spain[comunidad]['provincias'][provincia]['municipios'].copy():
+            # si el municipio se llama igual a la provincia luego nos saltamos el check de la provincia
+            if municipio == provincia:
+                homonimo = True
+            check_municipio = checkspain(spain,comunidad,provincia,municipio)
+            check_municipio.checkMunicipios()
+            #Eliminamos aquellos municipios que no arrojen resultado
+            if check_municipio.result == 'delete':
+                spain[comunidad]['provincias'][provincia]['municipios'].pop(municipio)
+                print_update("Eliminando municipio sin clientes: " + municipio)
+            #Registramos el resultado de los municipios que si
+            if check_municipio.result != 'delete':
+                spain[comunidad]['provincias'][provincia]['municipios'][municipio] = check_municipio.result
+
+        if len(spain[comunidad]['provincias'][provincia]['municipios']) == 0:
+            spain[comunidad]['provincias'][provincia].pop('municipios')
+            print_update("Eliminando provincia sin clientes: " + provincia)
+
+        # Comprobamos si existiera una URL para la provincia
+        check_provincia = checkspain(spain,comunidad, provincia)
+        check_provincia.checkProvincia()
+
+        if check_provincia.result == 'delete':
+            if 'municipios' in spain[comunidad]['provincias'][provincia]:
+                continue
+
+            if 'municipios' not in spain[comunidad]['provincias'][provincia]:
+                spain[comunidad]['provincias'].pop(provincia)
+
+        if check_provincia.result != 'delete':
+            if homonimo:
+                continue
+            if not homonimo:
+                spain[comunidad]['provincias'][provincia] = check_provincia.result
+
+    for provincia in spain[comunidad]['provincias'].copy():
+        if len(spain[comunidad]['provincias'][provincia])==0:
+            spain[comunidad]['provincias'].pop(provincia)
+
+
+    if len(spain[comunidad]['provincias']) == 0:
+        spain.pop(comunidad)
+        print("Eliminando comunidad sin clientes: " + comunidad + "\n")
 
 for comunidad in spain:
-    print(comunidad)
-    for idx, provincia in enumerate(spain[comunidad]['provincias']):
-        full_url = "https://valenciacitas-v2.s3.eu-west-3.amazonaws.com/data/{}.gzip".format(normalize(provincia).lower())
-        if checkstatus(full_url) != 200 && idx == len()
-        if checkstatus(full_url) == 200:
-            print(provincia)
-            print("Esta provincia tiene un json")
-            gzip_uncompressed = unzip_json(full_url)
-            spain[comunidad]['provincias'][provincia]['girls'] = gzip_uncompressed['girls']
-            spain[comunidad]['provincias'][provincia]['guysAndTrans'] = gzip_uncompressed['guysAndTrans']
-            for girl in spain[comunidad]['provincias'][provincia]['girls']:
-                url = "http://localhost:8000/api/users/"
-                data = {}
-                data['username'] = girl['name']['es']
-                data['age'] = 18
-                data['phone'] = girl['phoneNumber']
-                data['email'] = "paredes1516@gmail.com"
-                data['addressCity'] = provincia
-                data['addressCountry'] = 'Spain'
-                data['addressState'] = 'comunidad'
-                data['genre'] = 'M'
-                data['isWorker'] = True
-                data['isDeleted'] = False
-                data['show_phone'] = False
-                r = requests.post(url, json=data)
-            for other in spain[comunidad]['provincias'][provincia]['guysAndTrans']:
-                # print(other)
-                if 'isMan' in other:
-                    if other['isMan']:
-                        url = "http://localhost:8000/api/users/"
-                        data = {}
-                        data['username'] = other['name']['es']
-                        data['age'] = 18
-                        data['phone'] = other['phoneNumber']
-                        data['email'] = "paredes1516@gmail.com"
-                        data['addressCity'] = provincia
-                        data['addressCountry'] = 'Spain'
-                        data['addressState'] = 'comunidad'
-                        data['genre'] = 'H'
-                        data['isWorker'] = True
-                        data['isDeleted'] = False
-                        data['show_phone'] = False
-                        r = requests.post(url, json=data)
-                        # print(r.text)
+    for provincia in spain[comunidad]['provincias']:
+        for municipio in spain[comunidad]['provincias'][provincia]['municipios']:
+            for user in spain[comunidad]['provincias'][provincia]['municipios'][municipio]['girls']:
+                URL = "http://localhost:8000/api/users/"
+                data = generate_post_data(user,genre="M",city=comunidad,state=provincia,muni=municipio)
+                response = requests.post(URL, json=data)
+                # print(response.text)
+
+        for municipio in spain[comunidad]['provincias'][provincia]['municipios']:
+            for user in spain[comunidad]['provincias'][provincia]['municipios'][municipio]['guysAndTrans']:
+                if 'isMan' in user:
+                    if user['isMan']:
+                        URL = "http://localhost:8000/api/users/"
+                        data = generate_post_data(user,genre="H",city=comunidad,state=provincia,muni=municipio)
+                        response = requests.post(URL, json=data)
+                        # print(response.text)
                     else:
-                        url = "http://localhost:8000/api/users/"
-                        data = {}
-                        data['username'] = other['name']['es']
-                        data['age'] = 18
-                        data['phone'] = other['phoneNumber']
-                        data['email'] = "paredes1516@gmail.com"
-                        data['addressCity'] = provincia
-                        data['addressCountry'] = 'Spain'
-                        data['addressState'] = 'comunidad'
-                        data['genre'] = 'T'
-                        data['isWorker'] = True
-                        data['isDeleted'] = False
-                        data['show_phone'] = False
-                        r = requests.post(url, json=data)
-                # else:
-                #     print(list(other.keys()))
+                        URL = "http://localhost:8000/api/users/"
+                        data = generate_post_data(user,genre="T",city=comunidad,state=provincia,muni=municipio)
+                        response = requests.post(URL, json=data)
+                        # print(response.text)

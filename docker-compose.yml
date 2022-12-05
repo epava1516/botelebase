@@ -7,7 +7,7 @@ networks:
 services:
   api:
     container_name: rrhh-back
-    image: teleback:1.0.0
+    image: "teleback:1.0.1"
     networks:
       - backend
     environment:
