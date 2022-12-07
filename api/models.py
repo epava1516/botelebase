@@ -43,7 +43,7 @@ class User(models.Model):
     createdAt = models.DateTimeField(auto_now_add=True)
 
 class UserComment(models.Model):
-    userId = models.ForeignKey(User, related_name='comments', on_delete=models.CASCADE, blank=True, null=True)
+    userId = models.ForeignKey(User, related_name='comments', on_delete=models.CASCADE)
     rate = models.IntegerField(validators=rateValues)
     description = models.TextField(max_length=30, null=True)
     createdBy = models.OneToOneField(User, related_name='Usuario', on_delete=models.CASCADE, blank=True, null=True)

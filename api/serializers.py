@@ -9,7 +9,7 @@ class uCommentSerializer(ModelSerializer):
         extra_kwargs = {'comments': {'required': False}} 
 
 class UserSerializer(ModelSerializer):
-    comments = uCommentSerializer(many=True)
+    comments = uCommentSerializer(many=True, required=False)
     class Meta:
         model = User
         fields = ['id', 'firstName', 'lastName', 'username', 'galeryPath', 'description', 'age', 'genre', 'nationality', 'phone_prefix', 'phone', 'show_phone', 'email', 'comments','show_email', 'dni', 'dniPhoto', 'coordinates', 'addressCity', 'addressCountry', 'addressPostalcode', 'addressState', 'addressMuni', 'addressZone', 'addressStreet', 'services', 'isWorker', 'isDeleted', 'updatedAt', 'createdAt']

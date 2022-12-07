@@ -75,20 +75,23 @@ class profileHandler:
         self.index = 0
         self.page = self.json_list[self.index]
 
-    def load_current_description(self, json):
-        title = f"<b><u>{json['username']}</u></b>\n"
-        description = f"{json['description']}\n\n"
-        phone = f"<b><u>Telefono:</u></b> {json['phone_prefix']}{json['phone']}\n\n"
+    def load_current_description(self, jsonInput):
+        data  = jsonInput['results'][0]
+        title = f"<b><u>{data['username']}</u></b>\n"
+        description = f"{data['description']}\n\n"
+        phone = f"<b><u>Telefono:</u></b> +34{data['phone']}\n\n"
         services = "<b><u>Servicios:</u></b>\n"
-        for service in json['services']: services += f"\t-{service}\n"
-        zone = f"<b>Zona:</b> {json['zone']}"
+        if 'services' in data:
+            for service in data['services']:
+                services += f"\t-{service}\n"
+        zone = f"<b>Zona:</b> {data['addressZone']}"
         self.current_description = title + description + phone + services + zone
 
     def buttons(self, jsonInput):
-        json_input  = jsonInput
-        phone = json_input['results'][0]['phone']
-        back_page = json_input['previous']
-        next_page = json_input['next']
+        data  = jsonInput['results'][0]
+        phone = data['phone']
+        back_page = jsonInput['previous']
+        next_page = jsonInput['next']
         markup = InlineKeyboardMarkup()
         b_whatsapp = InlineKeyboardButton("Envíame un WhatsApp", url=f"https://api.whatsapp.com/send?phone={phone}")
         b_telegram = InlineKeyboardButton("Envíame un Telegram", url=f"https://t.me/+{phone}")
@@ -109,17 +112,3 @@ class profileHandler:
             markup.row(b_prev, b_close, b_next)
         markup.row(b_back)
         return(markup)
-
-    def previous_page(self):
-        if self.index == 0:
-            self.page = self.json_list[self.index]
-        else:
-            self.index -= 1
-            self.page = self.json_list[self.index]
-
-    def next_page(self):
-        if self.index == self.max_index:
-            self.page = self.json_list[self.index]
-        else:
-            self.index += 1
-            self.page = self.json_list[self.index]
