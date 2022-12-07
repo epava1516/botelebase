@@ -8,6 +8,7 @@
                                     "--disable=invalid-name",
                                     "--disable=unspecified-encoding",
                                     "--disable=missing-class-docstring",
+                                    "--disable=attribute-defined-outside-init",
                                     "--max-line-length=240",
                                 ],
 }

@@ -1,43 +1,45 @@
-from rest_framework import serializers
+from rest_framework.serializers import ModelSerializer
 from .models import User, UserComment, Group, GroupComment, UserGroupRelation, UserGallery, GroupGallery
 
-class UserSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = User
-        fields = ('id', 'firstName', 'lastName', 'username', 'galeryPath', 'description', 'age', 'genre', 'nationality', 'phone_prefix', 'phone', 'show_phone', 'email', 'show_email', 'dni', 'dniPhoto', 'coordinates', 'addressCity', 'addressCountry', 'addressPostalcode', 'addressState', 'addressMuni', 'addressZone', 'addressStreet', 'services', 'isWorker', 'isDeleted', 'updatedAt', 'createdAt')
-        read_only_fields = ('createdAt',)
-
-class uCommentSerializer(serializers.ModelSerializer):
+class uCommentSerializer(ModelSerializer):
     class Meta:
         model = UserComment
-        fields = ('id', 'userId', 'rate', 'description', 'createdBy', 'isDeleted', 'updatedAt', 'createdAt')
-        read_only_fields = ('createdAt',)
+        fields = ['id', 'userId', 'rate', 'description', 'createdBy', 'isDeleted', 'updatedAt', 'createdAt']
+        read_only_fields = ['createdAt']
+        extra_kwargs = {'comments': {'required': False}} 
 
-class GroupSerializer(serializers.ModelSerializer):
+class UserSerializer(ModelSerializer):
+    comments = uCommentSerializer(many=True)
+    class Meta:
+        model = User
+        fields = ['id', 'firstName', 'lastName', 'username', 'galeryPath', 'description', 'age', 'genre', 'nationality', 'phone_prefix', 'phone', 'show_phone', 'email', 'comments','show_email', 'dni', 'dniPhoto', 'coordinates', 'addressCity', 'addressCountry', 'addressPostalcode', 'addressState', 'addressMuni', 'addressZone', 'addressStreet', 'services', 'isWorker', 'isDeleted', 'updatedAt', 'createdAt']
+        read_only_fields = ['createdAt']
+
+class GroupSerializer(ModelSerializer):
     class Meta:
         model = Group
         fields = ('id', 'name', 'description', 'createdBy', 'addressCity', 'addressCountry', 'addressPostalcode', 'addressState', 'addressStreet', 'services', 'isDeleted', 'updatedAt', 'createdAt')
         read_only_fields = ('createdAt',)
 
-class gCommentSerializer(serializers.ModelSerializer):
+class gCommentSerializer(ModelSerializer):
     class Meta:
         model = GroupComment
         fields = ('id', 'groupId', 'rate', 'description', 'createdBy', 'isDeleted', 'updatedAt', 'createdAt')
         read_only_fields = ('createdAt',)
 
-class ugRelationSerializer(serializers.ModelSerializer):
+class ugRelationSerializer(ModelSerializer):
     class Meta:
         model = UserGroupRelation
         fields = ('id', 'userId', 'isAdmin', 'groupId', 'updatedAt', 'createdAt')
         read_only_fields = ('createdAt',)
 
-class userGallerySerializer(serializers.ModelSerializer):
+class userGallerySerializer(ModelSerializer):
     class Meta:
         model = UserGallery
         fields = ('id', 'userId', 'photo', 'checksum',)
         # read_only_fields = ('checksum',)
 
-class groupGallerySerializer(serializers.ModelSerializer):
+class groupGallerySerializer(ModelSerializer):
     class Meta:
         model = GroupGallery
         fields = ('id', 'groupId', 'photo', 'checksum',)

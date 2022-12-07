@@ -32,12 +32,11 @@ def generate_post_data(input_json, genre, country='spain', city=None, state=None
     json_object['addressCountry'] = country
     json_object['addressCity'] = city
     json_object['addressState'] = state
-    json_object['addressZone'] = json_object['zone'] if 'zone' in json_object else None
+    json_object['addressZone'] = input_json['zone'] if 'zone' in input_json else None
     json_object['addressMuni'] = muni
-    if 'coordinates' in json_object:
-        json_object['coordinates'] = json_object['coordinates']
+    json_object['coordinates'] = input_json['coordinates'] if 'coordinates' in input_json else None
     json_object['genre'] = genre
-    json_object['nationality'] = json_object['country'] if 'country' in json_object else None
+    json_object['nationality'] = input_json['country'] if 'country' in input_json else None
     json_object['isWorker'] = True
     json_object['isDeleted'] = False
     json_object['show_phone'] = False

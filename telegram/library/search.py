@@ -17,19 +17,20 @@ class searchHandler:
         markup.row(b_searchFilters, b_search)
         markup.row(b_back)
         markup.row(b_close)
-        return(markup)
+        return markup
 
     def results(self):
         pass
 
     def profileMessage(self):
         template = ''
-        return(template)
+        return template
 
     def profileButtons(self):
+        json_input  = ""
         markup = InlineKeyboardMarkup()
-        b_whatsapp = InlineKeyboardButton('Envíame un WhatsApp', url='https://api.whatsapp.com/send?phone={prefix}{phone}'.format(prefix='34', phone='666391553'))
-        b_telegram = InlineKeyboardButton('Envíame un Telegram', url='https://t.me/+{prefix}{phone}'.format(prefix='34', phone='666391553'))
+        b_whatsapp = InlineKeyboardButton('Envíame un WhatsApp', url=f"https://api.whatsapp.com/send?phone=34{json_input['results'][0]['phone']}")
+        b_telegram = InlineKeyboardButton('Envíame un Telegram', url=f"https://t.me/+34{json_input['results'][0]['phone']}")
         b_call = InlineKeyboardButton('Llámame 📞', callback_data='llamame')
         b_reservation = InlineKeyboardButton('Haz una reserva 🗓', callback_data='reservas')
         b_prev = InlineKeyboardButton('⬅️ Anterior', callback_data='anterior')
@@ -41,7 +42,7 @@ class searchHandler:
         markup.row(b_reservation)
         markup.row(b_prev, b_close, b_next)
         markup.row(b_back)
-        return(markup)
+        return markup
 
 handler = searchHandler()
 
@@ -49,7 +50,7 @@ handler = searchHandler()
 
 
 
-class profileHandle:
+class profileHandler:
     def __init__(self):
         self.build_url_request()
         self.set_filter_url()
@@ -83,10 +84,14 @@ class profileHandle:
         zone = f"<b>Zona:</b> {json['zone']}"
         self.current_description = title + description + phone + services + zone
 
-    def buttons(self, json):
+    def buttons(self, jsonInput):
+        json_input  = jsonInput
+        phone = json_input['results'][0]['phone']
+        back_page = json_input['previous']
+        next_page = json_input['next']
         markup = InlineKeyboardMarkup()
-        b_whatsapp = InlineKeyboardButton("Envíame un WhatsApp", url=f"https://api.whatsapp.com/send?phone={json['phone_prefix']}{json['phone']}")
-        b_telegram = InlineKeyboardButton("Envíame un Telegram", url=f"https://t.me/+{json['phone_prefix']}{json['phone']}")
+        b_whatsapp = InlineKeyboardButton("Envíame un WhatsApp", url=f"https://api.whatsapp.com/send?phone={phone}")
+        b_telegram = InlineKeyboardButton("Envíame un Telegram", url=f"https://t.me/+{phone}")
         b_call = InlineKeyboardButton('Llámame 📞', callback_data='llamame')
         b_reservation = InlineKeyboardButton('Haz una reserva 🗓', callback_data='reservas')
         b_prev = InlineKeyboardButton('⬅️ Anterior', callback_data='anterior')
@@ -96,9 +101,9 @@ class profileHandle:
         markup.row(b_whatsapp, b_telegram)
         markup.row(b_call)
         markup.row(b_reservation)
-        if self.index == 0:
+        if back_page is None:
             markup.row(b_close, b_next)
-        elif self.index == self.max_index:
+        elif next_page is None:
             markup.row(b_prev, b_close)
         else:
             markup.row(b_prev, b_close, b_next)

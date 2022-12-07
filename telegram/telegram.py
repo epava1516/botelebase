@@ -1,14 +1,15 @@
-from library import start, search, unregister, register, profiles
 import telebot
+from library import start, search, unregister, register, profiles
 
 
 class botHandler:
     def __init__(self):
-        pass
+        TOKEN = '5924131606:AAF260YSrBRNqEme3ucNIUVkpBUMLSYtWFs'
+        self.bot = telebot.TeleBot(TOKEN, parse_mode="html")
+        self.callbackQueryHandler()
+        self.commands()
 
-        self.bot = telebot.TeleBot(
-            '5924131606:AAF260YSrBRNqEme3ucNIUVkpBUMLSYtWFs', parse_mode="html")
-
+    def callbackQueryHandler(self):
         @self.bot.callback_query_handler(func=lambda x: True)
         def handlerButtons(call):
             cid = call.from_user.id
@@ -52,20 +53,17 @@ class botHandler:
                     unregister.message, cid, mid, reply_markup=unregister.buttons())
 
         # Comandos del bot
-
+    def commands(self):
         @self.bot.message_handler(commands=['start'])
         def cmd_start(message):
             self.homePage(message.chat.id)
 
         @self.bot.message_handler(commands=['help', 'ayuda'])
         def cmd_help(message):
-            self.homePage(message.chat.id, help=True)
+            self.homePage(message.chat.id, help_cmd=True)
 
-        print("Iniciando bot...")
-        self.bot.infinity_polling()
-
-    def homePage(self, mid, cid=None, help=None):
-        if help is True:
+    def homePage(self, mid, cid=None, help_cmd=None):
+        if help_cmd is True:
             return(self.bot.send_message(mid, start.help, reply_markup=start.buttons()))
         if cid is None:
             return(self.bot.send_message(mid, start.welcome, reply_markup=start.buttons()))
@@ -75,5 +73,11 @@ class botHandler:
     def searchHandler(self):
         pass
 
+    @classmethod
+    def runBot(cls):
+        self = cls()
+        print("Iniciando bot...")
+        self.bot.infinity_polling()
+
 if __name__ == '__main__':
-    initClass = botHandler()
+    botHandler().runBot()

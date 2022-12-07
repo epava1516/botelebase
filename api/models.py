@@ -10,22 +10,18 @@ class genreChoices(models.TextChoices):
     MUJER = 'M', _('Mujer')
     TRANS = 'T', _('Trans')
 
-class nationalityChoices(models.TextChoices):
-    ESPANYOLA = 'ES', _('Española')
-    FRANCESA = 'FR', _('Francesa')
-
 # Create your models here.
 class User(models.Model):
     firstName = models.CharField(max_length=150, null=True)
     lastName = models.CharField(max_length=30, null=True)
-    username = models.CharField(max_length=150, unique=True)
+    username = models.CharField(max_length=150)
     galeryPath = models.CharField(max_length=30, null=True)
-    description = models.TextField(max_length=500, null=True)
+    description = models.TextField(null=True)
     age = models.IntegerField(validators=ageValues, null=True)
     genre = models.CharField(max_length=30, choices=genreChoices.choices)
-    nationality = models.CharField(max_length=30, choices=nationalityChoices.choices, null=True)
+    nationality = models.CharField(max_length=30, null=True, blank=True)
     phone_prefix = models.IntegerField(null=True)
-    phone = models.IntegerField()
+    phone = models.IntegerField(unique=True)
     show_phone = models.BooleanField(default=False)
     # email = models.EmailField(unique=True)
     email = models.EmailField(unique=False, null=True)
@@ -38,7 +34,7 @@ class User(models.Model):
     addressPostalcode = models.CharField(max_length=30, null=True)
     addressState = models.CharField(max_length=30)
     addressMuni = models.CharField(max_length=30)
-    addressZone = models.CharField(max_length=30, null=True)
+    addressZone = models.CharField(max_length=1000, null=True)
     addressStreet = models.CharField(max_length=30, null=True)
     services = models.JSONField(null=True)
     isWorker = models.BooleanField(default=False)
@@ -47,10 +43,10 @@ class User(models.Model):
     createdAt = models.DateTimeField(auto_now_add=True)
 
 class UserComment(models.Model):
-    userId = models.ForeignKey(User, on_delete=models.CASCADE)
+    userId = models.ForeignKey(User, related_name='comments', on_delete=models.CASCADE, blank=True, null=True)
     rate = models.IntegerField(validators=rateValues)
     description = models.TextField(max_length=30, null=True)
-    createdBy = models.OneToOneField(User, related_name='Usuario', on_delete=models.CASCADE)
+    createdBy = models.OneToOneField(User, related_name='Usuario', on_delete=models.CASCADE, blank=True, null=True)
     isDeleted = models.BooleanField(default=False)
     updatedAt = models.DateTimeField(auto_now=True)
     createdAt = models.DateTimeField(auto_now_add=True)

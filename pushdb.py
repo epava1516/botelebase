@@ -80,7 +80,7 @@ for comunidad in spain:
                 URL = "http://localhost:8000/api/users/"
                 data = generate_post_data(user,genre="M",city=comunidad,state=provincia,muni=municipio)
                 response = requests.post(URL, json=data)
-                # print(response.text)
+                print(response.text)
 
         for municipio in spain[comunidad]['provincias'][provincia]['municipios']:
             for user in spain[comunidad]['provincias'][provincia]['municipios'][municipio]['guysAndTrans']:
