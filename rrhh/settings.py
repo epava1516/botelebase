@@ -25,7 +25,7 @@ SECRET_KEY = 'yfwig6a$yw=-uef38ta^)5#j5prs2st+w=#b*essw1_nnsiomp'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['localhost','127.0.0.1']
+ALLOWED_HOSTS = ['localhost','127.0.0.1', '192.168.1.243']
 
 if 'CODESPACE_NAME' in os.environ:
     CODESPACE_NAME = os.environ['CODESPACE_NAME']
@@ -91,7 +91,7 @@ DATABASES = {
 }
 
 REST_FRAMEWORK = {
-    'DEFAULT_PERMISSION_CLASSES': [],
+    'DEFAULT_PERMISSION_CLASSES': ['rest_framework.permissions.AllowAny'],
     'DEFAULT_AUTHENTICATION_CLASSES': [],
     'DEFAULT_FILTER_BACKENDS': ['url_filter.integrations.drf.DjangoFilterBackend','rest_framework.filters.OrderingFilter', 'rest_framework.filters.SearchFilter'],
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',

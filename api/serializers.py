@@ -6,41 +6,40 @@ class uCommentSerializer(ModelSerializer):
         model = UserComment
         fields = ['id', 'userId', 'rate', 'description', 'createdBy', 'isDeleted', 'updatedAt', 'createdAt']
         read_only_fields = ['createdAt']
-        extra_kwargs = {'comments': {'required': False}} 
 
 class UserSerializer(ModelSerializer):
     comments = uCommentSerializer(many=True, required=False)
     class Meta:
         model = User
-        fields = ['id', 'firstName', 'lastName', 'username', 'galeryPath', 'description', 'age', 'genre', 'nationality', 'phone_prefix', 'phone', 'show_phone', 'email', 'comments','show_email', 'dni', 'dniPhoto', 'coordinates', 'addressCity', 'addressCountry', 'addressPostalcode', 'addressState', 'addressMuni', 'addressZone', 'addressStreet', 'services', 'isWorker', 'isDeleted', 'updatedAt', 'createdAt']
+        fields = ['id', 'firstName', 'lastName', 'username', 'photos', 'description', 'age', 'genre', 'nationality', 'phone_prefix', 'phone', 'show_phone', 'email', 'comments','show_email', 'dni', 'dniPhoto', 'coordinates', 'addressCity', 'addressCountry', 'addressPostalcode', 'addressState', 'addressMuni', 'addressZone', 'addressStreet', 'services', 'isWorker', 'isDeleted', 'updatedAt', 'createdAt']
         read_only_fields = ['createdAt']
 
 class GroupSerializer(ModelSerializer):
     class Meta:
         model = Group
-        fields = ('id', 'name', 'description', 'createdBy', 'addressCity', 'addressCountry', 'addressPostalcode', 'addressState', 'addressStreet', 'services', 'isDeleted', 'updatedAt', 'createdAt')
-        read_only_fields = ('createdAt',)
+        fields = ['id', 'name', 'description', 'createdBy', 'addressCity', 'addressCountry', 'addressPostalcode', 'addressState', 'addressStreet', 'services', 'isDeleted', 'updatedAt', 'createdAt']
+        read_only_fields = ['createdAt']
 
 class gCommentSerializer(ModelSerializer):
     class Meta:
         model = GroupComment
-        fields = ('id', 'groupId', 'rate', 'description', 'createdBy', 'isDeleted', 'updatedAt', 'createdAt')
-        read_only_fields = ('createdAt',)
+        fields = ['id', 'groupId', 'rate', 'description', 'createdBy', 'isDeleted', 'updatedAt', 'createdAt']
+        read_only_fields = ['createdAt']
 
 class ugRelationSerializer(ModelSerializer):
     class Meta:
         model = UserGroupRelation
-        fields = ('id', 'userId', 'isAdmin', 'groupId', 'updatedAt', 'createdAt')
-        read_only_fields = ('createdAt',)
+        fields = ['id', 'userId', 'isAdmin', 'groupId', 'updatedAt', 'createdAt']
+        read_only_fields = ['createdAt']
 
 class userGallerySerializer(ModelSerializer):
     class Meta:
         model = UserGallery
-        fields = ('id', 'userId', 'photo', 'checksum',)
-        # read_only_fields = ('checksum',)
+        fields = ['id', 'userId', 'photo', 'checksum']
+        # read_only_fields = ['checksum']
 
 class groupGallerySerializer(ModelSerializer):
     class Meta:
         model = GroupGallery
-        fields = ('id', 'groupId', 'photo', 'checksum',)
-        # read_only_fields = ('checksum',)
+        fields = ['id', 'groupId', 'photo', 'checksum']
+        # read_only_fields = ['checksum']

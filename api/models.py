@@ -17,6 +17,8 @@ class User(models.Model):
     username = models.CharField(max_length=150)
     galeryPath = models.CharField(max_length=30, null=True)
     description = models.TextField(null=True)
+    photos = models.JSONField(null=True)
+    verifiedPhotos = models.BooleanField(default=False)
     age = models.IntegerField(validators=ageValues, null=True)
     genre = models.CharField(max_length=30, choices=genreChoices.choices)
     nationality = models.CharField(max_length=30, null=True, blank=True)

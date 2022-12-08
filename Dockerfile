@@ -11,17 +11,11 @@ ENV PUBLIC_IP=127.0.0.1 \
 #Set exposed port
 EXPOSE ${PUBLIC_PORT}
 
-# Container basic set-up
-# RUN apk update \
-#     && apk add --virtual build-deps gcc python3-dev musl-dev \
-#     && apk add --no-cache mariadb-dev \
-#     && pip install mysqlclient  \
-#     && apk del build-deps
-
 # Project set-up
 WORKDIR /code
 COPY . .
-RUN pip install -r requirements.txt
+RUN pip install -r requirements.txt && \
+    sed -i "s/ungettext_lazy/gettext_lazy/g" /usr/local/lib/python3.11/site-packages/url_filter/validators.py
 
 # Container default run
 ENTRYPOINT ["sh", "-c", "python manage.py runserver $PUBLIC_IP:$PUBLIC_PORT"]

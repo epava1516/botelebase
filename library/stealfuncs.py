@@ -27,8 +27,10 @@ def generate_post_data(input_json, genre, country='spain', city=None, state=None
     json_object = {}
     json_object['username'] = input_json['name']['es']
     json_object['description'] = input_json['description']['es']
+    json_object['description'] = json_object['description'].replace('<p>', '').replace('</p>', '\n').replace('<br>', '\n').replace('<br />', '\n')
     json_object['age'] = input_json['age'] if 'age' in input_json else '18'
     json_object['phone'] = input_json['phoneNumber']
+    json_object['photos'] = input_json['featuredImages']if 'featuredImages' in input_json else []
     json_object['addressCountry'] = country
     json_object['addressCity'] = city
     json_object['addressState'] = state
@@ -37,6 +39,7 @@ def generate_post_data(input_json, genre, country='spain', city=None, state=None
     json_object['coordinates'] = input_json['coordinates'] if 'coordinates' in input_json else None
     json_object['genre'] = genre
     json_object['nationality'] = input_json['country'] if 'country' in input_json else None
+    json_object['verifiedPhotos'] = input_json['verifiedPhotos']
     json_object['isWorker'] = True
     json_object['isDeleted'] = False
     json_object['show_phone'] = False

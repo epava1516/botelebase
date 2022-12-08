@@ -1,11 +1,10 @@
-from rest_framework import viewsets, permissions
+from rest_framework import viewsets
 from rest_framework.pagination import PageNumberPagination
 from .models import User, UserComment, Group, GroupComment, UserGroupRelation
 from .serializers import UserSerializer, uCommentSerializer, GroupSerializer, gCommentSerializer, ugRelationSerializer
 
 class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
-    permission_classes = [permissions.AllowAny]
     serializer_class = UserSerializer
     filter_fields = ['age', 'genre', 'nationality', 'phone', 'email', 'addressCity', 'addressCountry', 'addressPostalcode', 'addressState', 'addressMuni', 'isWorker', 'isDeleted']
     search_fields = ['username', 'description', 'age', 'nationality', 'phone', 'email', 'services']
@@ -22,14 +21,12 @@ class UserViewSet(viewsets.ModelViewSet):
 
 class uCommentViewSet(viewsets.ModelViewSet):
     queryset = UserComment.objects.all()
-    permission_classes = [permissions.AllowAny]
     serializer_class = uCommentSerializer
     filter_fields = ['userId','createdBy', 'isDeleted']
     ordering = ['id']
 
 class GroupViewSet(viewsets.ModelViewSet):
     queryset = Group.objects.all()
-    permission_classes = [permissions.AllowAny]
     serializer_class = GroupSerializer
     filter_fields = ['createdBy', 'addressCity', 'addressCountry', 'addressPostalcode', 'addressState', 'addressStreet', 'isDeleted']
     search_fields = ['name', 'description', 'services']
@@ -47,14 +44,12 @@ class GroupViewSet(viewsets.ModelViewSet):
 
 class gCommentViewSet(viewsets.ModelViewSet):
     queryset = GroupComment.objects.all()
-    permission_classes = [permissions.AllowAny]
     serializer_class = gCommentSerializer
     filter_fields = ['groupId', 'createdBy', 'isDeleted',]
     ordering = ['id']
 
 class ugRelationViewSet(viewsets.ModelViewSet):
     queryset = UserGroupRelation.objects.all()
-    permission_classes = [permissions.AllowAny]
     serializer_class = ugRelationSerializer
     filter_fields = ['userId', 'isAdmin', 'groupId']
     ordering = ['id']

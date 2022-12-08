@@ -1,10 +1,12 @@
 #!/bin/bash
 docker compose down
+docker stop $(docker ps -aq)
+docker system prune -af
+docker build . -t teleback:1.0.1
 docker compose up -d
-docker exec -ti rrhh-back sed -i "s/ungettext_lazy/gettext_lazy/g" /usr/local/lib/python3.11/site-packages/url_filter/validators.py
 docker restart rrhh-back
 rm -rf  api/migrations/0*.py
 docker exec -ti rrhh-back python manage.py makemigrations
 docker exec -ti rrhh-back python manage.py migrate
-sleep 10
+sleep 5
 python pushdb.py
