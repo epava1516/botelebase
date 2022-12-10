@@ -16,7 +16,7 @@ class User(models.Model):
     lastName = models.CharField(max_length=30, null=True)
     username = models.CharField(max_length=150)
     galeryPath = models.CharField(max_length=30, null=True)
-    description = models.TextField(null=True)
+    description = models.TextField(null=True, blank=True)
     photos = models.JSONField(null=True)
     verifiedPhotos = models.BooleanField(default=False)
     age = models.IntegerField(validators=ageValues, null=True)

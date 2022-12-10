@@ -25,7 +25,12 @@ SECRET_KEY = 'yfwig6a$yw=-uef38ta^)5#j5prs2st+w=#b*essw1_nnsiomp'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['localhost','127.0.0.1', '192.168.1.243']
+ALLOWED_HOSTS = ['localhost','127.0.0.1']
+
+if os.environ['ALLOWED_EXTERNAL'] != 0:
+    for HOST in os.environ['ALLOWED_EXTERNAL'].split(','):
+        ALLOWED_HOSTS.append(HOST)
+
 
 if 'CODESPACE_NAME' in os.environ:
     CODESPACE_NAME = os.environ['CODESPACE_NAME']

@@ -6,7 +6,7 @@ from .serializers import UserSerializer, uCommentSerializer, GroupSerializer, gC
 class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
-    filter_fields = ['age', 'genre', 'nationality', 'phone', 'email', 'addressCity', 'addressCountry', 'addressPostalcode', 'addressState', 'addressMuni', 'isWorker', 'isDeleted']
+    filter_fields = ['age', 'description','genre', 'nationality', 'phone', 'email', 'addressCity', 'addressCountry', 'addressPostalcode', 'addressState', 'addressMuni', 'isWorker', 'isDeleted']
     search_fields = ['username', 'description', 'age', 'nationality', 'phone', 'email', 'services']
     ordering_fields = ['age', 'coordinates', 'updatedAt']
     ordering = ['id']

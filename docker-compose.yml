@@ -2,7 +2,10 @@ version: "3.9"
 
 networks:
   backend:
+    name: backend
     external: false
+  frontend:
+    external: true
 
 services:
   api:
@@ -10,6 +13,7 @@ services:
     image: "teleback:1.0.1"
     networks:
       - backend
+      - frontend
     environment:
       POSTGRES_USER: prueba
       POSTGRES_PASSWORD: prueba
@@ -17,6 +21,7 @@ services:
       POSTGRES_HOST: db
       POSTGRES_PORT: 5432
       PUBLIC_IP: 0.0.0.0
+      ALLOWED_EXTERNAL: '192.168.1.243,api,localhost,127.0.0.1'
     restart: unless-stopped
     ports:
       - "8000:8000"
