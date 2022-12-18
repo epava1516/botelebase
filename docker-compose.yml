@@ -5,6 +5,7 @@ networks:
     name: backend
     external: false
   frontend:
+    name: frontend
     external: true
 
 services:
