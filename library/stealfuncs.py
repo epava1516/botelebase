@@ -48,7 +48,7 @@ def generate_post_data(input_json, genre, country='spain', city=None, state=None
     json_object['verifiedPhotos'] = input_json['verifiedPhotos']
     json_object['isWorker'] = True
     json_object['isDeleted'] = False
-    json_object['show_phone'] = False
+    json_object['showPhone'] = False
     json_object['services'] = input_json['services']
     return json_object
 

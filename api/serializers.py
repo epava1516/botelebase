@@ -11,7 +11,7 @@ class UserSerializer(ModelSerializer):
     comments = uCommentSerializer(many=True, required=False)
     class Meta:
         model = User
-        fields = ['id', 'firstName', 'lastName', 'username', 'photos', 'description', 'age', 'genre', 'nationality', 'phone_prefix', 'phone', 'show_phone', 'email', 'comments','show_email', 'dni', 'dniPhoto', 'coordinates', 'addressCity', 'addressCountry', 'addressPostalcode', 'addressState', 'addressMuni', 'addressZone', 'addressStreet', 'services', 'isWorker', 'credits', 'isPremium', 'isDeleted', 'updatedAt', 'createdAt']
+        fields = ['id', 'firstName', 'lastName', 'username', 'tUserID', 'photos', 'description', 'age', 'genre', 'nationality', 'phonePrefix', 'phone', 'showPhone', 'email', 'comments','showEmail', 'dni', 'dniPhoto', 'coordinates', 'addressCity', 'addressCountry', 'addressPostalcode', 'addressState', 'addressMuni', 'addressZone', 'addressStreet', 'services', 'isWorker', 'credits', 'isPremium', 'creditInUse', 'isDeleted', 'updatedAt', 'createdAt']
         read_only_fields = ['createdAt']
 
 class GroupSerializer(ModelSerializer):

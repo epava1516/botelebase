@@ -11,7 +11,7 @@ networks:
 services:
   api:
     container_name: rrhh-back
-    image: "teleback:1.0.1"
+    image: "epava1516/teleback:1.0.0"
     networks:
       - backend
       - frontend
@@ -22,10 +22,12 @@ services:
       POSTGRES_HOST: db
       POSTGRES_PORT: 5432
       PUBLIC_IP: 0.0.0.0
-      ALLOWED_EXTERNAL: '192.168.1.243,api,localhost,127.0.0.1'
+      DJANGO_DEBUG: 1
+      DJANGO_SECRET_KEY: prueba
+      ALLOWED_EXTERNAL: '192.168.1.243,api,localhost,127.0.0.1,*'
     restart: unless-stopped
     ports:
-      - "8000:8000"
+      - "80:8000"
     volumes:
       - .:/code
   db:
