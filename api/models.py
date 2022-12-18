@@ -40,6 +40,8 @@ class User(models.Model):
     addressStreet = models.CharField(max_length=30, null=True)
     services = models.JSONField(null=True)
     isWorker = models.BooleanField(default=False)
+    credits = models.IntegerField()
+    isPremium = models.BooleanField(default=False)
     isDeleted = models.BooleanField(default=False)
     updatedAt = models.DateTimeField(auto_now=True)
     createdAt = models.DateTimeField(auto_now_add=True)
