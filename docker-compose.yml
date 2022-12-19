@@ -24,7 +24,7 @@ services:
       PUBLIC_IP: 0.0.0.0
       DJANGO_DEBUG: 1
       DJANGO_SECRET_KEY: prueba
-      ALLOWED_EXTERNAL: '192.168.1.243,api,localhost,127.0.0.1,*'
+      ALLOWED_EXTERNAL: '192.168.1.243,api,localhost,127.0.0.1'
     restart: unless-stopped
     ports:
       - "80:8000"

@@ -25,7 +25,7 @@ SECRET_KEY = os.getenv('DJANGO_SECRET_KEY', 'yfwig6a$yw=-uef38ta^)5#j5prs2st+w=#
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True if os.getenv('DJANGO_DEBUG') == '1' else False
 
-ALLOWED_HOSTS = [host for host in os.getenv('ALLOWED_HOSTS', '').split(',') if len(os.getenv('ALLOWED_HOSTS', '')) > 0]
+ALLOWED_HOSTS = [host for host in os.getenv('ALLOWED_EXTERNAL', '').split(',') if len(os.getenv('ALLOWED_EXTERNAL', '')) > 0]
 
 if 'CODESPACE_NAME' in os.environ:
     CODESPACE_NAME = os.environ['CODESPACE_NAME']
