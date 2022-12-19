@@ -1,5 +1,8 @@
 version: "3.9"
 
+volumes:
+  pgdata:
+
 networks:
   backend:
     name: backend
@@ -40,3 +43,5 @@ services:
       POSTGRES_USER: prueba
       POSTGRES_PASSWORD: prueba
       POSTGRES_DB: prueba
+    volumes:
+      - pgdata:/var/lib/postgresql/data
